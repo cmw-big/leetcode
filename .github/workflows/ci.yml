@@ -1,0 +1,26 @@
+﻿# github的打包和部署的demo
+name: GitHub Actions Build and Deploy Demo
+# 整个流程在master分支发生push事件时触发。
+on:
+  push:
+    branches:
+      - master
+jobs:
+  # 只有一个job，运行在虚拟机环境ubuntu-latest。
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        with:
+          persist-credentials: false
+      - name: Install and Build
+        run: |
+          npm install
+          npm run-script test
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@master
+        with:
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: build
