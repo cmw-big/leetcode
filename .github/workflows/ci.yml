@@ -8,10 +8,12 @@ on:
 jobs:
   # 只有一个job，运行在虚拟机环境ubuntu-latest。
   build-and-deploy:
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
     runs-on: ubuntu-latest
     steps:
+      # name 表示这次步骤的名字
       - name: Checkout
-        uses: actions/checkout@master # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        uses: actions/checkout@V3 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
         with:
           persist-credentials: false
       - name: Install and Build
